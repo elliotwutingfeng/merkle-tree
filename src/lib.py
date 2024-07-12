@@ -159,10 +159,11 @@ class MerkleTree:
         new_target_index = target_index // 2
 
         is_odd = len(nodes) % 2 != 0
-        i = 0
-        while i < len(nodes) - (1 if is_odd else 0):
+
+        # Iterate through sibling-pairs on the same level.
+        for i in range(0, len(nodes) - (1 if is_odd else 0), 2):
             parents.append(cls.__make_parent(nodes[i], nodes[i + 1]))
-            i += 2  # Jump to next sibling-pair on the same level.
+
         if is_odd:
             parents.append(nodes[-1])  # Last node has no sibling.
         return cls.__merkle_proof_aux(parents, audit_nodes, new_target_index)
